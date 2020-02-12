@@ -55,65 +55,16 @@ type YearlyHoroscope struct {
 	Year      string `json:"year"`
 }
 
-//GetHoroscope returns a string with user's sunsign, requested horoscope date, and horoscope for the requested type
-func GetHoroscope(userSunsign string, dateInput string) string {
+//GetDailyHoroscope configures JSON api to struct recieved and returns string including zodiac sign, day for horoscope, and horoscope based on user input
+func GetDailyHoroscope(userSunsign string, dateInput string) (userHoroscope DailyHoroscope) {
 	userSunsign = strings.Title(userSunsign)
 	dateInput = strings.ToLower(dateInput)
 	myURL := "http://horoscope-api.herokuapp.com/horoscope/" + dateInput + "/" + userSunsign
-	response, err := http.Get(myURL)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	body, err := ioutil.ReadAll(response.Body)
+	response, _ := http.Get(myURL)
+	body, _ := ioutil.ReadAll(response.Body)
 	defer response.Body.Close()
-	invalidDate := strings.Contains(string(body), "<title>404 Not Found</title>")
-
-	if invalidDate {
-		return "\nPlease try again using a valid date. Refer to example below.\n./horoscope -s='Libra' -date='today'"
-	}
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if dateInput == "today" {
-		GetDailyHoroscope(body)
-	} else if dateInput == "week" {
-		GetWeeklyHoroscope(body)
-	} else if dateInput == "month" {
-		GetMonthlyHoroscope(body)
-	} else {
-		GetYearlyHoroscope(body)
-	}
-
-	if len(ConfHoroscope) == 0 {
-		return "\nPlease try again using a valid sunsign. Refer to example below.\n./horoscope -s='Libra' -date='today'"
-	}
-
-	return ConfHoroscope
-}
-
-//GetDailyHoroscope configures JSON api to struct recieved and returns string including zodiac sign, day for horoscope, and horoscope based on user input
-func GetDailyHoroscope(jsonStruct []byte) string {
-	var UserHoroscope DailyHoroscope
-	err := json.Unmarshal(jsonStruct, &UserHoroscope)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if UserHoroscope.Horoscope == "[]" {
-		ConfHoroscope = ""
-		return ConfHoroscope
-	}
-
-	retDate := strings.Split(UserHoroscope.Date, "-")
-	fullDate := "Here is your reading for the Day of " + NumToMonth[retDate[1]] + " " + retDate[2] + ", " + retDate[0]
-	ConfHoroscope = "Hi, " + UserHoroscope.Sunsign + "!" + "\n" + fullDate + "\n" + UserHoroscope.Horoscope
-	return ConfHoroscope
-
+	json.Unmarshal(body, &userHoroscope)
+	return
 }
 
 //GetWeeklyHoroscope configures JSON api to struct recieved and returns string of zodiac sign, week for horoscope, and horoscope based on user input
