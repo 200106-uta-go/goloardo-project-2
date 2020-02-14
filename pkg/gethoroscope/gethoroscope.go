@@ -62,3 +62,14 @@ func GetDailyHoroscope(userSunsign string, dateInput string) (userHoroscope Dail
 	json.Unmarshal(body, &userHoroscope)
 	return
 }
+
+//GetAllDailyHoroscope gets all signs horoscope information
+func GetAllDailyHoroscope() (horoscopes []DailyHoroscope) {
+	horoscopes = append(horoscopes,
+		GetDailyHoroscope("gemini", "today"),
+		GetDailyHoroscope("libra", "today"),
+		GetDailyHoroscope("", ""),
+	)
+
+	return
+}
