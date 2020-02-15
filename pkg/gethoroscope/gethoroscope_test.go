@@ -8,3 +8,10 @@ func TestGetDailyHoroscope(t *testing.T) {
 		t.Error("TEST FAILED")
 	}
 }
+
+func TestYearlyHoroscope(t *testing.T) {
+	myHoroscope := GetYearlyHoroscope("gemini", "year")
+	if myHoroscope.Horoscope == "" && myHoroscope.Sunsign != "Gemini" {
+		t.Error("TEST FAILED")
+	}
+}

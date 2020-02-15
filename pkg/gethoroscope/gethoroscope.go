@@ -66,9 +66,82 @@ func GetDailyHoroscope(userSunsign string, dateInput string) (userHoroscope Dail
 //GetAllDailyHoroscope gets all signs horoscope information
 func GetAllDailyHoroscope() (horoscopes []DailyHoroscope) {
 	horoscopes = append(horoscopes,
-		GetDailyHoroscope("gemini", "today"),
-		GetDailyHoroscope("libra", "today"),
-		GetDailyHoroscope("", ""),
+		GetDailyHoroscope("Aries", "today"),
+		GetDailyHoroscope("Taurus", "today"),
+		GetDailyHoroscope("Gemini", "today"),
+		GetDailyHoroscope("Cancer", "today"),
+		GetDailyHoroscope("Leo", "today"),
+		GetDailyHoroscope("Virgo", "today"),
+		GetDailyHoroscope("Libra", "today"),
+		GetDailyHoroscope("Scorpio", "today"),
+		GetDailyHoroscope("Sagittarius", "today"),
+		GetDailyHoroscope("Capricorn", "today"),
+		GetDailyHoroscope("Aquarius", "today"),
+		GetDailyHoroscope("Pisces", "today"),
+	)
+
+	return
+}
+
+//GetYearlyHoroscope configures JSON api to struct recieved and returns string including zodiac sign, year for horoscope, and horoscope based on user input
+func GetYearlyHoroscope(userSunsign string, dateInput string) (userHoroscope YearlyHoroscope) {
+	userSunsign = strings.Title(userSunsign)
+	dateInput = strings.ToLower(dateInput)
+	myURL := "http://horoscope-api.herokuapp.com/horoscope/" + dateInput + "/" + userSunsign
+	response, _ := http.Get(myURL)
+	body, _ := ioutil.ReadAll(response.Body)
+	defer response.Body.Close()
+	json.Unmarshal(body, &userHoroscope)
+	return
+}
+
+//GetAllYearlyHoroscope gets all signs horoscope information
+func GetAllYearlyHoroscope() (horoscopes []YearlyHoroscope) {
+	horoscopes = append(horoscopes,
+		GetYearlyHoroscope("Aries", "year"),
+		GetYearlyHoroscope("Taurus", "year"),
+		GetYearlyHoroscope("Gemini", "year"),
+		GetYearlyHoroscope("Cancer", "year"),
+		GetYearlyHoroscope("Leo", "year"),
+		GetYearlyHoroscope("Virgo", "year"),
+		GetYearlyHoroscope("Libra", "year"),
+		GetYearlyHoroscope("Scorpio", "year"),
+		GetYearlyHoroscope("Sagittarius", "year"),
+		GetYearlyHoroscope("Capricorn", "year"),
+		GetYearlyHoroscope("Aquarius", "year"),
+		GetYearlyHoroscope("Pisces", "year"),
+	)
+
+	return
+}
+
+//GetMonthlyHoroscope configures JSON api to struct recieved and returns YearlyHorsocope struct that includes zodiac sign, month for horoscope, and horoscope based on user input
+func GetMonthlyHoroscope(userSunsign string, dateInput string) (userHoroscope MonthlyHoroscope) {
+	userSunsign = strings.Title(userSunsign)
+	dateInput = strings.ToLower(dateInput)
+	myURL := "http://horoscope-api.herokuapp.com/horoscope/" + dateInput + "/" + userSunsign
+	response, _ := http.Get(myURL)
+	body, _ := ioutil.ReadAll(response.Body)
+	defer response.Body.Close()
+	json.Unmarshal(body, &userHoroscope)
+	return
+}
+
+//GetAllMonthlyHoroscope gets all signs horoscope information
+func GetAllMonthlyHoroscope() (horoscopes []MonthlyHoroscope) {
+	horoscopes = append(horoscopes,
+		GetMonthlyHoroscope("Aries", "month"),
+		GetMonthlyHoroscope("Taurus", "month"),
+		GetMonthlyHoroscope("Gemini", "month"),
+		GetMonthlyHoroscope("Cancer", "month"),
+		GetMonthlyHoroscope("Leo", "month"),
+		GetMonthlyHoroscope("Virgo", "month"),
+		GetMonthlyHoroscope("Libra", "month"),
+		GetMonthlyHoroscope("Scorpio", "month"),
+		GetMonthlyHoroscope("Sagittarius", "month"),
+		GetMonthlyHoroscope("Capricorn", "month"),
+		GetMonthlyHoroscope("Aquarius", "month"),
+		GetMonthlyHoroscope("Pisces", "month"),
 	)
 
 	return
