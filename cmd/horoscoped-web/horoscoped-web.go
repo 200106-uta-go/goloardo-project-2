@@ -63,10 +63,10 @@ func main() {
 	})
 
 	// Start server & Setup channels
-	fmt.Println("Horoscope server is serving at port 80...")
+	fmt.Println("Horoscope server is serving at port 8080...")
 	errorChan := make(chan error, 2)
 	go func() {
-		errorChan <- http.ListenAndServe(":80", nil)
+		errorChan <- http.ListenAndServe(":8080", nil)
 	}()
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT)
