@@ -84,10 +84,9 @@ func GetAllDailyHoroscope() (horoscopes []DailyHoroscope) {
 }
 
 //GetYearlyHoroscope configures JSON api to struct recieved and returns string including zodiac sign, year for horoscope, and horoscope based on user input
-func GetYearlyHoroscope(userSunsign string, dateInput string) (userHoroscope YearlyHoroscope) {
-	userSunsign = strings.Title(userSunsign)
-	dateInput = strings.ToLower(dateInput)
-	myURL := "http://horoscope-api.herokuapp.com/horoscope/" + dateInput + "/" + userSunsign
+func GetYearlyHoroscope(userSunsign string, dbip string) (userHoroscope YearlyHoroscope) {
+	userSunsign = strings.ToLower(userSunsign)
+	myURL := "http://" + dbip + "/read?key=\"" + userSunsign + "month\""
 	response, _ := http.Get(myURL)
 	body, _ := ioutil.ReadAll(response.Body)
 	defer response.Body.Close()
@@ -96,20 +95,20 @@ func GetYearlyHoroscope(userSunsign string, dateInput string) (userHoroscope Yea
 }
 
 //GetAllYearlyHoroscope gets all signs horoscope information
-func GetAllYearlyHoroscope() (horoscopes []YearlyHoroscope) {
+func GetAllYearlyHoroscope(dbip string) (horoscopes []YearlyHoroscope) {
 	horoscopes = append(horoscopes,
-		GetYearlyHoroscope("Aries", "year"),
-		GetYearlyHoroscope("Taurus", "year"),
-		GetYearlyHoroscope("Gemini", "year"),
-		GetYearlyHoroscope("Cancer", "year"),
-		GetYearlyHoroscope("Leo", "year"),
-		GetYearlyHoroscope("Virgo", "year"),
-		GetYearlyHoroscope("Libra", "year"),
-		GetYearlyHoroscope("Scorpio", "year"),
-		GetYearlyHoroscope("Sagittarius", "year"),
-		GetYearlyHoroscope("Capricorn", "year"),
-		GetYearlyHoroscope("Aquarius", "year"),
-		GetYearlyHoroscope("Pisces", "year"),
+		GetYearlyHoroscope("Aries", dbip),
+		GetYearlyHoroscope("Taurus", dbip),
+		GetYearlyHoroscope("Gemini", dbip),
+		GetYearlyHoroscope("Cancer", dbip),
+		GetYearlyHoroscope("Leo", dbip),
+		GetYearlyHoroscope("Virgo", dbip),
+		GetYearlyHoroscope("Libra", dbip),
+		GetYearlyHoroscope("Scorpio", dbip),
+		GetYearlyHoroscope("Sagittarius", dbip),
+		GetYearlyHoroscope("Capricorn", dbip),
+		GetYearlyHoroscope("Aquarius", dbip),
+		GetYearlyHoroscope("Pisces", dbip),
 	)
 
 	return
@@ -117,9 +116,8 @@ func GetAllYearlyHoroscope() (horoscopes []YearlyHoroscope) {
 
 //GetMonthlyHoroscope configures JSON api to struct recieved and returns YearlyHorsocope struct that includes zodiac sign, month for horoscope, and horoscope based on user input
 func GetMonthlyHoroscope(userSunsign string, dateInput string) (userHoroscope MonthlyHoroscope) {
-	userSunsign = strings.Title(userSunsign)
-	dateInput = strings.ToLower(dateInput)
-	myURL := "http://horoscope-api.herokuapp.com/horoscope/" + dateInput + "/" + userSunsign
+	userSunsign = strings.ToLower(userSunsign)
+	myURL := "http://" + dbip + "/read?key=\"" + userSunsign + "year\""
 	response, _ := http.Get(myURL)
 	body, _ := ioutil.ReadAll(response.Body)
 	defer response.Body.Close()
@@ -130,18 +128,18 @@ func GetMonthlyHoroscope(userSunsign string, dateInput string) (userHoroscope Mo
 //GetAllMonthlyHoroscope gets all signs horoscope information
 func GetAllMonthlyHoroscope() (horoscopes []MonthlyHoroscope) {
 	horoscopes = append(horoscopes,
-		GetMonthlyHoroscope("Aries", "month"),
-		GetMonthlyHoroscope("Taurus", "month"),
-		GetMonthlyHoroscope("Gemini", "month"),
-		GetMonthlyHoroscope("Cancer", "month"),
-		GetMonthlyHoroscope("Leo", "month"),
-		GetMonthlyHoroscope("Virgo", "month"),
-		GetMonthlyHoroscope("Libra", "month"),
-		GetMonthlyHoroscope("Scorpio", "month"),
-		GetMonthlyHoroscope("Sagittarius", "month"),
-		GetMonthlyHoroscope("Capricorn", "month"),
-		GetMonthlyHoroscope("Aquarius", "month"),
-		GetMonthlyHoroscope("Pisces", "month"),
+		GetMonthlyHoroscope("Aries", dbip),
+		GetMonthlyHoroscope("Taurus", dbip),
+		GetMonthlyHoroscope("Gemini", dbip),
+		GetMonthlyHoroscope("Cancer", dbip),
+		GetMonthlyHoroscope("Leo", dbip),
+		GetMonthlyHoroscope("Virgo", dbip),
+		GetMonthlyHoroscope("Libra", dbip),
+		GetMonthlyHoroscope("Scorpio", dbip),
+		GetMonthlyHoroscope("Sagittarius", dbip),
+		GetMonthlyHoroscope("Capricorn", dbip),
+		GetMonthlyHoroscope("Aquarius", dbip),
+		GetMonthlyHoroscope("Pisces", dbip),
 	)
 
 	return

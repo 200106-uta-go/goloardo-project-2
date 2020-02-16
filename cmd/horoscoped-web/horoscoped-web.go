@@ -28,8 +28,11 @@ type MonthlyContent struct {
 	MonthlyHoros []gethoroscope.MonthlyHoroscope
 }
 
+var dbip string
+
 func main() {
 	config.SendNotify("horowebserver")
+	dbip = config.SendVerify("db")
 
 	itmpl := template.Must(template.ParseFiles("web/index.html"))
 	tmpl2 := template.Must(template.ParseFiles("web/yearly.html"))
@@ -46,7 +49,7 @@ func main() {
 	http.HandleFunc("/year", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
 		data := YearlyContent{
-			YearlyHoros: gethoroscope.GetAllYearlyHoroscope(),
+			YearlyHoros: gethoroscope.GetAllYearlyHoroscope(dbip),
 		}
 		tmpl2.Execute(w, data)
 	})
@@ -58,8 +61,6 @@ func main() {
 		}
 		tmpl3.Execute(w, data)
 	})
-
-	fmt.Println(config.SendVerify("horowebserver"))
 
 	// Start server & Setup channels
 	fmt.Println("Horoscope server is serving at port 80...")
@@ -73,9 +74,9 @@ func main() {
 		select {
 		case err := <-errorChan:
 			if err != nil {
-				log.Fatalln(err)
 				// Bottom method sends the destroy signal to the ark
 				config.SendDestroy("horowebserver")
+				log.Fatalln(err)
 			}
 
 		case sig := <-signalChan:
