@@ -32,8 +32,8 @@ func main() {
 
 	errorChan := make(chan error, 5)
 	go func() {
-		fmt.Println("Listening on ports 80 (http)")
-		errorChan <- http.ListenAndServe(":80", nil)
+		fmt.Println("Listening on ports 7777 (http)")
+		errorChan <- http.ListenAndServe(":7777", nil)
 	}()
 
 	signalChan := make(chan os.Signal, 1)
@@ -115,11 +115,11 @@ func verify(w http.ResponseWriter, r *http.Request) {
 							goto fall
 						}
 						w.Header().Set("Content-Type", "application/json")
-						fmt.Println(resp)
 						w.Write(resp)
 						break
 					}
 				}
+				break
 			} else {
 				goto fall
 			}

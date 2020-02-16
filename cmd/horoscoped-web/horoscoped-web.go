@@ -3,8 +3,13 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
+	"github.com/200106-uta-go/goloardo-project-2/config"
 	"github.com/200106-uta-go/goloardo-project-2/pkg/gethoroscope"
 )
 
@@ -24,6 +29,7 @@ type MonthlyContent struct {
 }
 
 func main() {
+	config.SendNotify("horowebserver")
 
 	itmpl := template.Must(template.ParseFiles("web/index.html"))
 	tmpl2 := template.Must(template.ParseFiles("web/yearly.html"))
@@ -53,9 +59,30 @@ func main() {
 		tmpl3.Execute(w, data)
 	})
 
-	println("Server is running on port 80")
-	err := http.ListenAndServe(":80", nil)
-	if err != nil {
-		fmt.Println("Server crash:", err)
+	fmt.Println(config.SendVerify("horowebserver"))
+
+	// Start server & Setup channels
+	fmt.Println("Horoscope server is serving at port 80...")
+	errorChan := make(chan error, 2)
+	go func() {
+		errorChan <- http.ListenAndServe(":80", nil)
+	}()
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, syscall.SIGINT)
+	for {
+		select {
+		case err := <-errorChan:
+			if err != nil {
+				log.Fatalln(err)
+				// Bottom method sends the destroy signal to the ark
+				config.SendDestroy("horowebserver")
+			}
+
+		case sig := <-signalChan:
+			fmt.Println("\nShutting down due to", sig)
+			// Bottom method sends the destroy signal to the ark
+			config.SendDestroy("horowebserver")
+			os.Exit(0)
+		}
 	}
 }
