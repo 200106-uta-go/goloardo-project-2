@@ -57,7 +57,7 @@ func main() {
 	http.HandleFunc("/month", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
 		data := MonthlyContent{
-			MonthlyHoros: gethoroscope.GetAllMonthlyHoroscope(),
+			MonthlyHoros: gethoroscope.GetAllMonthlyHoroscope(dbip),
 		}
 		tmpl3.Execute(w, data)
 	})

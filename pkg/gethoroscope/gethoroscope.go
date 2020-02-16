@@ -115,7 +115,7 @@ func GetAllYearlyHoroscope(dbip string) (horoscopes []YearlyHoroscope) {
 }
 
 //GetMonthlyHoroscope configures JSON api to struct recieved and returns YearlyHorsocope struct that includes zodiac sign, month for horoscope, and horoscope based on user input
-func GetMonthlyHoroscope(userSunsign string, dateInput string) (userHoroscope MonthlyHoroscope) {
+func GetMonthlyHoroscope(userSunsign string, dbip string) (userHoroscope MonthlyHoroscope) {
 	userSunsign = strings.ToLower(userSunsign)
 	myURL := "http://" + dbip + "/read?key=\"" + userSunsign + "year\""
 	response, _ := http.Get(myURL)
@@ -126,7 +126,7 @@ func GetMonthlyHoroscope(userSunsign string, dateInput string) (userHoroscope Mo
 }
 
 //GetAllMonthlyHoroscope gets all signs horoscope information
-func GetAllMonthlyHoroscope() (horoscopes []MonthlyHoroscope) {
+func GetAllMonthlyHoroscope(dbip string) (horoscopes []MonthlyHoroscope) {
 	horoscopes = append(horoscopes,
 		GetMonthlyHoroscope("Aries", dbip),
 		GetMonthlyHoroscope("Taurus", dbip),
