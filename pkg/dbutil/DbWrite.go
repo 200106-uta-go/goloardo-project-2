@@ -1,8 +1,6 @@
 package dbutil
 
 import (
-	"log"
-
 	"github.com/dgraph-io/badger"
 )
 
@@ -26,7 +24,7 @@ func DbWrite(db *badger.DB, k string, v string) (string, string) {
 		return err
 	})
 	if err != nil {
-		log.Panic(err)
+		panic(err)
 	}
 	return k, v
 }

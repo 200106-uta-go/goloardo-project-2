@@ -1,8 +1,6 @@
 package dbutil
 
 import (
-	"log"
-
 	"github.com/dgraph-io/badger"
 )
 
@@ -20,7 +18,7 @@ func DbRead(db *badger.DB, k string) string {
 	err := db.View(func(txn *badger.Txn) error {
 		item, err := txn.Get([]byte(k))
 		if err != nil {
-			log.Panic(err)
+			panic(err)
 		}
 
 		err = item.Value(func(val []byte) error {
@@ -31,13 +29,13 @@ func DbRead(db *badger.DB, k string) string {
 			return nil
 		})
 		if err != nil {
-			log.Panic(err)
+			panic(err)
 		}
 
 		return nil
 	})
 	if err != nil {
-		log.Panic(err)
+		panic(err)
 	}
 	return v
 }
