@@ -33,7 +33,7 @@ func main() {
 	// Defer the closing of our database so that we can acess it later on.
 	defer db.Close()
 
-	config.SendNotify("db", myport, arkip)
+	config.SendNotify("db", arkip, myport)
 	fmt.Println("Hosting badger database server on port:", myport)
 
 	// Create a multiplexer to host mutliple endpoints in one struct

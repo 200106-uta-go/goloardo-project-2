@@ -5,9 +5,11 @@ all: dockDbServer
 
 #Start the docker container(dbserverContainer) with myDB volume attached. 
 dockDbServer:
-	docker volume create --name myDB
 	docker build -t codezipline/dbserver .
-	docker run -it --expose 8081 --name dbserverContainer -v myDB:/app/badger codezipline/dbserver
+
+dockerDbRun:
+	docker volume create --name myDB
+	docker run -it --expose 8081 --name dbserverContainer -v myDB:/app/badger codezipline/dbserver -ark 172.17.0.2
 
 #Inspects IP of the container
 dockContainerIP:
