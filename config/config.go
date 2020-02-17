@@ -26,11 +26,10 @@ func init() {
 	}
 	MyIP = addrs[(len(addrs) - 1)]
 	fmt.Println("Host IP:", addrs[(len(addrs)-1)])
-
 }
 
 // SendNotify sends to the ark a notify command to register this service
-func SendNotify(tipo string, port string) {
+func SendNotify(tipo string, arkip string, port string) {
 	sc := servicecall.ServiceCall{
 		Cmd:  "notify",
 		IP:   MyIP,
@@ -45,7 +44,7 @@ func SendNotify(tipo string, port string) {
 	}
 
 	// Try not to hardcode ark's ip address
-	resp, err := http.Post("http://127.0.0.1:7777/notify", "application/json", bytes.NewBuffer(body))
+	resp, err := http.Post("http://"+arkip+":7777/notify", "application/json", bytes.NewBuffer(body))
 	if err != nil || resp.StatusCode == 503 {
 		fmt.Println("ERROR: ark was not able to register this service ")
 		panic(err)
@@ -57,7 +56,7 @@ func SendNotify(tipo string, port string) {
 }
 
 // SendVerify ...
-func SendVerify(tipo string) (string, string) {
+func SendVerify(tipo string, arkip string) (string, string) {
 	sc := servicecall.ServiceCall{
 		Cmd:  "verify",
 		IP:   "",
@@ -71,7 +70,7 @@ func SendVerify(tipo string) (string, string) {
 	}
 
 	// Try not to hardcode ark's ip address
-	resp, err := http.Post("http://127.0.0.1:7777/verify", "application/json", bytes.NewBuffer(pbody))
+	resp, err := http.Post("http://"+arkip+":7777/verify", "application/json", bytes.NewBuffer(pbody))
 	if err != nil || resp.StatusCode == 503 {
 		fmt.Println("ERROR: ark was not able to verify the service requested ")
 		panic(err)
@@ -91,7 +90,7 @@ func SendVerify(tipo string) (string, string) {
 }
 
 // SendDestroy sends to the ark a destroy command to delete this service from the registered services
-func SendDestroy(tipo string, port string) {
+func SendDestroy(tipo string, arkip string, port string) {
 	sc := servicecall.ServiceCall{
 		Cmd:  "destroy",
 		IP:   MyIP,
@@ -106,7 +105,7 @@ func SendDestroy(tipo string, port string) {
 	}
 
 	// Try not to hardcode ark's ip address
-	resp, err := http.Post("http://127.0.0.1:7777/destroy", "application/json", bytes.NewBuffer(body))
+	resp, err := http.Post("http://"+arkip+":7777/destroy", "application/json", bytes.NewBuffer(body))
 	if err != nil || resp.StatusCode == 503 {
 		fmt.Println("NOTE: ark was not able to destroy this service", err)
 	} else if resp.StatusCode == 202 {
