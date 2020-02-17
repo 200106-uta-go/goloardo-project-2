@@ -18,6 +18,7 @@ type registry struct {
 	id   uuid.UUID
 	ip   string
 	tipo string
+	port string
 }
 
 var ark []registry
@@ -72,6 +73,7 @@ func notify(w http.ResponseWriter, r *http.Request) {
 					id:   uuid.New(),
 					ip:   sc.IP,
 					tipo: sc.Tipo,
+					port: sc.Port,
 				}
 				ark = append(ark, reg)
 				w.WriteHeader(201)
@@ -109,6 +111,7 @@ func verify(w http.ResponseWriter, r *http.Request) {
 							Cmd:  "arkresponse",
 							IP:   item.ip,
 							Tipo: item.tipo,
+							Port: item.port,
 						}
 						resp, err := json.Marshal(scresponse)
 						if err != nil {
@@ -147,7 +150,7 @@ func destroy(w http.ResponseWriter, r *http.Request) {
 			if sc.Cmd == "destroy" {
 				// Look on the ark archive for services of type sc.tipo
 				for i, item := range ark {
-					if item.ip == sc.IP && item.tipo == sc.Tipo {
+					if item.ip == sc.IP && item.port == sc.Port && item.tipo == sc.Tipo {
 						ark = append(ark[:i], ark[i+1:]...)
 						if err != nil {
 							goto fall
@@ -165,7 +168,6 @@ func destroy(w http.ResponseWriter, r *http.Request) {
 	fall:
 		fallthrough
 	default:
-		fmt.Println("Try hitting default")
 		w.WriteHeader(503)
 	}
 }

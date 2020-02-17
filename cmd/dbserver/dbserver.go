@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
 
 	"github.com/200106-uta-go/goloardo-project-2/config"
@@ -27,7 +26,7 @@ func main() {
 	// Defer the closing of our database so that we can acess it later on.
 	defer db.Close()
 
-	config.SendNotify("db")
+	config.SendNotify("db", "8081")
 	fmt.Println("Hosting badger database server on port: 8081")
 
 	// Create a multiplexer to host mutliple endpoints in one struct
@@ -39,14 +38,22 @@ func main() {
 	// Calls a read command to the database.
 	mux1.HandleFunc("/read", func(w http.ResponseWriter, r *http.Request) {
 		key := r.FormValue("key")
+		//fmt.Println(key)
 		value := dbutil.DbRead(db, key)
+		fmt.Println(value)
 		w.Header().Set("Content-Type", "text/plain")
-		fmt.Fprint(w, strings.Trim(value, "\""))
+		fmt.Fprintf(w, "%v", value)
 	})
 	// Calls a write command to the database.
 	mux1.HandleFunc("/write", func(w http.ResponseWriter, r *http.Request) {
+		if err := r.ParseForm(); err != nil {
+			//fmt.Fprintf(w, "ParseForm() err: %v", err)
+			fmt.Println(w, "ParseForm() err: %v", err)
+			return
+		}
 		key := r.FormValue("key")
 		value := r.FormValue("value")
+		fmt.Println(key, value)
 		rKey, rVal := dbutil.DbWrite(db, key, value)
 		w.Header().Set("Content-Type", "text/plain")
 		fmt.Fprintln(w, rKey, rVal)
@@ -67,13 +74,13 @@ func main() {
 		select {
 		case err := <-errorChan:
 			if err != nil {
-				config.SendDestroy("db")
+				config.SendDestroy("db", "8081")
 				panic(err)
 			}
 
 		case sig := <-signalChan:
 			fmt.Println("\nShutting down due to", sig)
-			config.SendDestroy("db")
+			config.SendDestroy("db", "8081")
 			os.Exit(0)
 		}
 	}

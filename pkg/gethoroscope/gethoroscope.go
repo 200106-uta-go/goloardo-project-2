@@ -2,6 +2,7 @@ package gethoroscope
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -85,74 +86,92 @@ func GetAllDailyHoroscope() (horoscopes []DailyHoroscope) {
 }
 
 //GetYearlyHoroscope configures JSON api to struct recieved and returns string including zodiac sign, year for horoscope, and horoscope based on user input
-func GetYearlyHoroscope(userSunsign string, dbip string) (yh YearlyHoroscope) {
-	userSunsign = strings.ToLower(userSunsign)
-	// NOTE hardcoded port
-	myURL := "http://" + dbip + ":8081" + "/read?key=\"" + userSunsign + "year\""
-	response, _ := http.Get(myURL)
-	body, _ := ioutil.ReadAll(response.Body)
-	defer response.Body.Close()
-
-	// Filling up the struct
-	yh.Horoscope = string(body)
+func GetYearlyHoroscope(userSunsign string, dbip string, dbport string) (yh YearlyHoroscope) {
 	yh.Sunsign = userSunsign
-	yh.Year = string(time.Now().UTC().Year())
+	userSunsign = strings.ToLower(userSunsign)
+	yh.Year = fmt.Sprint(time.Now().Year())
+
+	myURL := "http://" + dbip + ":" + dbport + "/read?key=" + userSunsign + "year"
+	response, err := http.Get(myURL)
+	if err != nil {
+		yh.Horoscope = fmt.Sprint(err)
+		return
+	}
+
+	body, err := ioutil.ReadAll(response.Body)
+	defer response.Body.Close()
+	if err != nil {
+		yh.Horoscope = fmt.Sprint(err)
+		return
+	}
+
+	// Filling up the body
+	yh.Horoscope = string(body)
 
 	return
 }
 
 //GetAllYearlyHoroscope gets all signs horoscope information
-func GetAllYearlyHoroscope(dbip string) (horoscopes []YearlyHoroscope) {
+func GetAllYearlyHoroscope(dbip string, dbport string) (horoscopes []YearlyHoroscope) {
 	horoscopes = append(horoscopes,
-		GetYearlyHoroscope("Aries", dbip),
-		GetYearlyHoroscope("Taurus", dbip),
-		GetYearlyHoroscope("Gemini", dbip),
-		GetYearlyHoroscope("Cancer", dbip),
-		GetYearlyHoroscope("Leo", dbip),
-		GetYearlyHoroscope("Virgo", dbip),
-		GetYearlyHoroscope("Libra", dbip),
-		GetYearlyHoroscope("Scorpio", dbip),
-		GetYearlyHoroscope("Sagittarius", dbip),
-		GetYearlyHoroscope("Capricorn", dbip),
-		GetYearlyHoroscope("Aquarius", dbip),
-		GetYearlyHoroscope("Pisces", dbip),
+		GetYearlyHoroscope("Aries", dbip, dbport),
+		GetYearlyHoroscope("Taurus", dbip, dbport),
+		GetYearlyHoroscope("Gemini", dbip, dbport),
+		GetYearlyHoroscope("Cancer", dbip, dbport),
+		GetYearlyHoroscope("Leo", dbip, dbport),
+		GetYearlyHoroscope("Virgo", dbip, dbport),
+		GetYearlyHoroscope("Libra", dbip, dbport),
+		GetYearlyHoroscope("Scorpio", dbip, dbport),
+		GetYearlyHoroscope("Sagittarius", dbip, dbport),
+		GetYearlyHoroscope("Capricorn", dbip, dbport),
+		GetYearlyHoroscope("Aquarius", dbip, dbport),
+		GetYearlyHoroscope("Pisces", dbip, dbport),
 	)
 
 	return
 }
 
 //GetMonthlyHoroscope configures JSON api to struct recieved and returns YearlyHorsocope struct that includes zodiac sign, month for horoscope, and horoscope based on user input
-func GetMonthlyHoroscope(userSunsign string, dbip string) (mh MonthlyHoroscope) {
-	userSunsign = strings.ToLower(userSunsign)
-	// NOTE hardcoded port
-	myURL := "http://" + dbip + ":8081" + "/read?key=\"" + userSunsign + "month\""
-	response, _ := http.Get(myURL)
-	body, _ := ioutil.ReadAll(response.Body)
-	defer response.Body.Close()
-
-	// Filling up the struct
-	mh.Horoscope = string(body)
+func GetMonthlyHoroscope(userSunsign string, dbip string, dbport string) (mh MonthlyHoroscope) {
 	mh.Sunsign = userSunsign
-	mh.Month = string(time.Now().UTC().Month())
+	userSunsign = strings.ToLower(userSunsign)
+	mh.Month = fmt.Sprint(time.Now().Month())
+
+	myURL := "http://" + dbip + ":" + dbport + "/read?key=" + userSunsign + "month"
+	response, err := http.Get(myURL)
+	if err != nil {
+		mh.Horoscope = fmt.Sprint(err)
+		return
+	}
+
+	body, err := ioutil.ReadAll(response.Body)
+	defer response.Body.Close()
+	if err != nil {
+		mh.Horoscope = fmt.Sprint(err)
+		return
+	}
+
+	// Filling up the body request was succesful
+	mh.Horoscope = string(body)
 
 	return
 }
 
 //GetAllMonthlyHoroscope gets all signs horoscope information
-func GetAllMonthlyHoroscope(dbip string) (horoscopes []MonthlyHoroscope) {
+func GetAllMonthlyHoroscope(dbip string, dbport string) (horoscopes []MonthlyHoroscope) {
 	horoscopes = append(horoscopes,
-		GetMonthlyHoroscope("Aries", dbip),
-		GetMonthlyHoroscope("Taurus", dbip),
-		GetMonthlyHoroscope("Gemini", dbip),
-		GetMonthlyHoroscope("Cancer", dbip),
-		GetMonthlyHoroscope("Leo", dbip),
-		GetMonthlyHoroscope("Virgo", dbip),
-		GetMonthlyHoroscope("Libra", dbip),
-		GetMonthlyHoroscope("Scorpio", dbip),
-		GetMonthlyHoroscope("Sagittarius", dbip),
-		GetMonthlyHoroscope("Capricorn", dbip),
-		GetMonthlyHoroscope("Aquarius", dbip),
-		GetMonthlyHoroscope("Pisces", dbip),
+		GetMonthlyHoroscope("Aries", dbip, dbport),
+		GetMonthlyHoroscope("Taurus", dbip, dbport),
+		GetMonthlyHoroscope("Gemini", dbip, dbport),
+		GetMonthlyHoroscope("Cancer", dbip, dbport),
+		GetMonthlyHoroscope("Leo", dbip, dbport),
+		GetMonthlyHoroscope("Virgo", dbip, dbport),
+		GetMonthlyHoroscope("Libra", dbip, dbport),
+		GetMonthlyHoroscope("Scorpio", dbip, dbport),
+		GetMonthlyHoroscope("Sagittarius", dbip, dbport),
+		GetMonthlyHoroscope("Capricorn", dbip, dbport),
+		GetMonthlyHoroscope("Aquarius", dbip, dbport),
+		GetMonthlyHoroscope("Pisces", dbip, dbport),
 	)
 
 	return

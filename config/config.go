@@ -30,11 +30,12 @@ func init() {
 }
 
 // SendNotify sends to the ark a notify command to register this service
-func SendNotify(tipo string) {
+func SendNotify(tipo string, port string) {
 	sc := servicecall.ServiceCall{
 		Cmd:  "notify",
 		IP:   MyIP,
 		Tipo: tipo,
+		Port: port,
 	}
 
 	body, err := json.Marshal(sc)
@@ -56,11 +57,12 @@ func SendNotify(tipo string) {
 }
 
 // SendVerify ...
-func SendVerify(tipo string) string {
+func SendVerify(tipo string) (string, string) {
 	sc := servicecall.ServiceCall{
 		Cmd:  "verify",
 		IP:   "",
 		Tipo: tipo,
+		Port: "",
 	}
 
 	pbody, err := json.Marshal(sc)
@@ -85,15 +87,16 @@ func SendVerify(tipo string) string {
 		panic(err)
 	}
 	fmt.Println(sc)
-	return sc.IP
+	return sc.IP, sc.Port
 }
 
 // SendDestroy sends to the ark a destroy command to delete this service from the registered services
-func SendDestroy(tipo string) {
+func SendDestroy(tipo string, port string) {
 	sc := servicecall.ServiceCall{
 		Cmd:  "destroy",
 		IP:   MyIP,
 		Tipo: tipo,
+		Port: port,
 	}
 
 	body, err := json.Marshal(sc)

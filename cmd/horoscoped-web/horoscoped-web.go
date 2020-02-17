@@ -29,10 +29,11 @@ type MonthlyContent struct {
 }
 
 var dbip string
+var dbport string
 
 func main() {
-	config.SendNotify("horowebserver")
-	dbip = config.SendVerify("db")
+	config.SendNotify("horowebserver", "8080")
+	dbip, dbport = config.SendVerify("db")
 
 	itmpl := template.Must(template.ParseFiles("web/index.html"))
 	tmpl2 := template.Must(template.ParseFiles("web/yearly.html"))
@@ -49,7 +50,7 @@ func main() {
 	http.HandleFunc("/year", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
 		data := YearlyContent{
-			YearlyHoros: gethoroscope.GetAllYearlyHoroscope(dbip),
+			YearlyHoros: gethoroscope.GetAllYearlyHoroscope(dbip, dbport),
 		}
 		tmpl2.Execute(w, data)
 	})
@@ -57,7 +58,7 @@ func main() {
 	http.HandleFunc("/month", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
 		data := MonthlyContent{
-			MonthlyHoros: gethoroscope.GetAllMonthlyHoroscope(dbip),
+			MonthlyHoros: gethoroscope.GetAllMonthlyHoroscope(dbip, dbport),
 		}
 		tmpl3.Execute(w, data)
 	})
@@ -75,14 +76,14 @@ func main() {
 		case err := <-errorChan:
 			if err != nil {
 				// Bottom method sends the destroy signal to the ark
-				config.SendDestroy("horowebserver")
+				config.SendDestroy("horowebserver", "8080")
 				log.Fatalln(err)
 			}
 
 		case sig := <-signalChan:
 			fmt.Println("\nShutting down due to", sig)
 			// Bottom method sends the destroy signal to the ark
-			config.SendDestroy("horowebserver")
+			config.SendDestroy("horowebserver", "8080")
 			os.Exit(0)
 		}
 	}
