@@ -10,6 +10,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	_ "github.com/200106-uta-go/goloardo-project-2/config"
 	"github.com/200106-uta-go/goloardo-project-2/pkg/models/servicecall"
 	"github.com/google/uuid"
 )

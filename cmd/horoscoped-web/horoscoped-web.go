@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"html/template"
 	"log"
@@ -31,9 +32,15 @@ type MonthlyContent struct {
 var dbip string
 var dbport string
 
+var arkip string
+var myport string
+
 func main() {
-	config.SendNotify("horowebserver", "8080")
-	dbip, dbport = config.SendVerify("db")
+	flag.StringVar(&arkip, "ark", "127.0.0.1", "This flag is used to specify the ip of the arkcontroller. DEFAULT = 127.0.0.1")
+	flag.StringVar(&myport, "p", "8080", "This flag is used to specify the app port. DEFAULT = 8080")
+
+	config.SendNotify("horowebserver", arkip, myport)
+	dbip, dbport = config.SendVerify("db", arkip)
 
 	itmpl := template.Must(template.ParseFiles("web/index.html"))
 	tmpl2 := template.Must(template.ParseFiles("web/yearly.html"))
@@ -64,10 +71,10 @@ func main() {
 	})
 
 	// Start server & Setup channels
-	fmt.Println("Horoscope server is serving at port 8080...")
+	fmt.Println("Horoscope server is serving at port " + myport + "...")
 	errorChan := make(chan error, 2)
 	go func() {
-		errorChan <- http.ListenAndServe(":8080", nil)
+		errorChan <- http.ListenAndServe(":"+myport, nil)
 	}()
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT)
@@ -76,14 +83,14 @@ func main() {
 		case err := <-errorChan:
 			if err != nil {
 				// Bottom method sends the destroy signal to the ark
-				config.SendDestroy("horowebserver", "8080")
+				config.SendDestroy("horowebserver", arkip, myport)
 				log.Fatalln(err)
 			}
 
 		case sig := <-signalChan:
 			fmt.Println("\nShutting down due to", sig)
 			// Bottom method sends the destroy signal to the ark
-			config.SendDestroy("horowebserver", "8080")
+			config.SendDestroy("horowebserver", arkip, myport)
 			os.Exit(0)
 		}
 	}
