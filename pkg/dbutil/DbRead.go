@@ -18,7 +18,7 @@ func DbRead(db *badger.DB, k string) string {
 	err := db.View(func(txn *badger.Txn) error {
 		item, err := txn.Get([]byte(k))
 		if err != nil {
-			panic(err)
+			return err
 		}
 
 		err = item.Value(func(val []byte) error {
@@ -29,13 +29,13 @@ func DbRead(db *badger.DB, k string) string {
 			return nil
 		})
 		if err != nil {
-			panic(err)
+			return err
 		}
 
 		return nil
 	})
 	if err != nil {
-		panic(err)
+		return ""
 	}
 	return v
 }

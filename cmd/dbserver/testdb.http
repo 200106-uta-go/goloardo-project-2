@@ -1,2 +1,2 @@
-//GET http://127.0.1.1:8081/write?key="first"&value="something" HTTP/1.1
-GET http://127.0.1.1:8081/read?key="first" HTTP/1.1
+//GET http://127.0.1.1:8081/write?key="ariesmonth"&value="aries sunsign horoscope" HTTP/1.1
+GET http://127.0.1.1:8081/read?key="ariesyear" HTTP/1.1

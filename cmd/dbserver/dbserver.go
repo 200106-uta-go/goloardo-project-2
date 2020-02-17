@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	"github.com/200106-uta-go/goloardo-project-2/config"
@@ -40,7 +41,7 @@ func main() {
 		key := r.FormValue("key")
 		value := dbutil.DbRead(db, key)
 		w.Header().Set("Content-Type", "text/plain")
-		fmt.Fprint(w, value)
+		fmt.Fprint(w, strings.Trim(value, "\""))
 	})
 	// Calls a write command to the database.
 	mux1.HandleFunc("/write", func(w http.ResponseWriter, r *http.Request) {

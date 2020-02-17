@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+	"time"
 )
 
 //NumToMonth stores month numeric references as keys and month names as values corresponding to their numeric equivalent
@@ -84,13 +85,19 @@ func GetAllDailyHoroscope() (horoscopes []DailyHoroscope) {
 }
 
 //GetYearlyHoroscope configures JSON api to struct recieved and returns string including zodiac sign, year for horoscope, and horoscope based on user input
-func GetYearlyHoroscope(userSunsign string, dbip string) (userHoroscope YearlyHoroscope) {
+func GetYearlyHoroscope(userSunsign string, dbip string) (yh YearlyHoroscope) {
 	userSunsign = strings.ToLower(userSunsign)
-	myURL := "http://" + dbip + "/read?key=\"" + userSunsign + "month\""
+	// NOTE hardcoded port
+	myURL := "http://" + dbip + ":8081" + "/read?key=\"" + userSunsign + "year\""
 	response, _ := http.Get(myURL)
 	body, _ := ioutil.ReadAll(response.Body)
 	defer response.Body.Close()
-	json.Unmarshal(body, &userHoroscope)
+
+	// Filling up the struct
+	yh.Horoscope = string(body)
+	yh.Sunsign = userSunsign
+	yh.Year = string(time.Now().UTC().Year())
+
 	return
 }
 
@@ -115,13 +122,19 @@ func GetAllYearlyHoroscope(dbip string) (horoscopes []YearlyHoroscope) {
 }
 
 //GetMonthlyHoroscope configures JSON api to struct recieved and returns YearlyHorsocope struct that includes zodiac sign, month for horoscope, and horoscope based on user input
-func GetMonthlyHoroscope(userSunsign string, dbip string) (userHoroscope MonthlyHoroscope) {
+func GetMonthlyHoroscope(userSunsign string, dbip string) (mh MonthlyHoroscope) {
 	userSunsign = strings.ToLower(userSunsign)
-	myURL := "http://" + dbip + "/read?key=\"" + userSunsign + "year\""
+	// NOTE hardcoded port
+	myURL := "http://" + dbip + ":8081" + "/read?key=\"" + userSunsign + "month\""
 	response, _ := http.Get(myURL)
 	body, _ := ioutil.ReadAll(response.Body)
 	defer response.Body.Close()
-	json.Unmarshal(body, &userHoroscope)
+
+	// Filling up the struct
+	mh.Horoscope = string(body)
+	mh.Sunsign = userSunsign
+	mh.Month = string(time.Now().UTC().Month())
+
 	return
 }
 
