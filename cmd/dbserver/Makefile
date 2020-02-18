@@ -9,7 +9,7 @@ dockDbServer:
 
 dockerDbRun:
 	docker volume create --name myDB
-	docker run -it --expose 8081 --name dbserverContainer -v myDB:/app/badger codezipline/dbserver -ark 172.17.0.2
+	docker run -it --expose 8081 --name dbserverContainer -v myDB:/app/badger codezipline/dbserver -ark=172.17.0.2
 
 #Inspects IP of the container
 dockContainerIP:

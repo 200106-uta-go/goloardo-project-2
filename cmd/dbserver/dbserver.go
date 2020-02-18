@@ -25,6 +25,8 @@ func main() {
 	flag.StringVar(&arkip, "ark", "127.0.0.1", "This flag is used to specify the ip of the arkcontroller. DEFAULT = 127.0.0.1")
 	flag.StringVar(&myport, "p", "8081", "This flag is used to specify the app port. DEFAULT = 8081")
 
+	flag.Parse()
+
 	// Open a badger database with the defined directory from 'opts'
 	db, err := badger.Open(badger.DefaultOptions("./app/badger"))
 	if err != nil {

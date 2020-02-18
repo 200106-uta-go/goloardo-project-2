@@ -39,6 +39,8 @@ func main() {
 	flag.StringVar(&arkip, "ark", "127.0.0.1", "This flag is used to specify the ip of the arkcontroller. DEFAULT = 127.0.0.1")
 	flag.StringVar(&myport, "p", "8080", "This flag is used to specify the app port. DEFAULT = 8080")
 
+	flag.Parse()
+
 	config.SendNotify("horowebserver", arkip, myport)
 	dbip, dbport = config.SendVerify("db", arkip)
 

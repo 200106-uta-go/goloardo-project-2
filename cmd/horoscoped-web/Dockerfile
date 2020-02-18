@@ -14,6 +14,8 @@ RUN go build -o horoscoped ./horoscoped-web.go
 FROM alpine:latest AS production
 # Copies everything from builder to your new continer
 RUN mkdir /app 
+WORKDIR /app
 COPY --from=builder /app /app
-EXPOSE 7777
-CMD [ "/app/horoscoped" ]
+EXPOSE 8080
+ENTRYPOINT [ "./horoscoped" ]
+CMD [ "" ]
