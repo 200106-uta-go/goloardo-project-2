@@ -22,7 +22,9 @@ apt install docker.io
 export MYIP=`curl ifconfig.me`
 #init a docker swarm 
 docker swarm init --advertise-addr $MYIP
-#docker swarm join-token worker
+#write to w_token.txt the worker token to accept worker nodes
+sudo docker swarm join-token worker -q > w_token.txt  
+# docker swarm join --token SWMTKN-1-0kzbg8ex75h1nufvng9589spp0hrnr3i5h5bz5iqizwf62oirl-dpe91dl6yzz1z0wufg9udd27s 54.200.205.192:2377      
 
 docker pull felicianoej/arkcontroller
 docker pull codezipline/dbserver
