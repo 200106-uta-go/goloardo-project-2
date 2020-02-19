@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -23,7 +24,15 @@ type MonthlyHoroscope struct {
 	Sunsign   string `json:"sunsign"`
 }
 
+var dbip string
+var dbport string
+
 func main() {
+
+	flag.StringVar(&dbip, "ip", "127.0.0.1", "Database ip")
+	flag.StringVar(&dbport, "p", "8081", "Database port")
+	flag.Parse()
+
 	signs := [12]string{
 		"aries",
 		"taurus",
@@ -51,7 +60,7 @@ func main() {
 		yh.Horoscope = strings.TrimRight(yh.Horoscope, "]")
 		yh.Horoscope = strings.Trim(yh.Horoscope, "\"")
 		//fmt.Println("Adding key:", key, "value:", yh.Horoscope)
-		resp, err := http.PostForm("http://127.0.1.1:8081/write", url.Values{
+		resp, err := http.PostForm("http://"+dbip+":"+dbport+"/write", url.Values{
 			"key":   {key},
 			"value": {yh.Horoscope},
 		})
@@ -73,7 +82,7 @@ func main() {
 		mh.Horoscope = strings.TrimRight(mh.Horoscope, "]")
 		mh.Horoscope = strings.Trim(mh.Horoscope, "\"")
 		//fmt.Println("Adding key:", key, "value:", yh.Horoscope)
-		resp, err := http.PostForm("http://127.0.1.1:8081/write", url.Values{
+		resp, err := http.PostForm("http://"+dbip+":"+dbport+"/write", url.Values{
 			"key":   {key},
 			"value": {mh.Horoscope},
 		})

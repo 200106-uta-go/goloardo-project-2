@@ -1,4 +1,4 @@
-POST http://3.12.233.125:7777/verify HTTP/1.1
+POST http://52.15.184.42:7777/verify HTTP/1.1
 content-type: application/json
 
 {

@@ -5,7 +5,7 @@ all: dockDbServer
 
 #Start the docker container(dbserverContainer) with myDB volume attached. 
 dockDbServer:
-	docker build -t codezipline/dbserver .
+	docker build -t codezipline/dbserver:latest .
 
 dockerDbRun:
 	docker volume create --name myDB

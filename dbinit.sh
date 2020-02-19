@@ -19,12 +19,8 @@ apt install golang
 apt install docker.io
 
 
-export MYIP=`curl ifconfig.me`
-#init a docker swarm 
-docker swarm init --advertise-addr $MYIP
-#write to w_token.txt the worker token to accept worker nodes
-sudo docker swarm join-token worker -q > w_token.txt  
-# docker swarm join --token SWMTKN-1-0kzbg8ex75h1nufvng9589spp0hrnr3i5h5bz5iqizwf62oirl-dpe91dl6yzz1z0wufg9udd27s 54.200.205.192:2377      
+#export MYIP=`curl ifconfig.me`
+#docker swarm join-token worker
 
 #pull each docker image for webApp, database, and controller
 docker pull felicianoej/arkcontroller
@@ -32,13 +28,12 @@ docker pull codezipline/dbserver
 docker pull danish287/horsocoped
 
 #create the overlap network for communication between networks
-docker network create -d overlay --attachable onet
+#docker network create -d overlay --attachable onet
 
 #run arkcontrol
-docker service create --name arkcontroller --publish published=7777,target=7777 --mode replicated --replicas=1 --network onet felicianoej/arkcontroller
+docker service create --name dbserver --expose 8081 --mode replicated --replicas=1 --network onet codezipline/dbserver
 
 
-exit
 
 
 
