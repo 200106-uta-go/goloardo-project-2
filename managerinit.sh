@@ -38,8 +38,6 @@ docker network create -d overlay --attachable onet
 docker service create --name arkcontroller --publish published=7777,target=7777 --mode replicated --replicas=1 --network onet felicianoej/arkcontroller
 
 
-exit
-
 
 
 
