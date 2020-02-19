@@ -24,6 +24,7 @@ Working in groups of 3 or 4, deploy a multi-instance server and VNFs to a produc
 - [ ] Presentation Slides
 
 
+#ORDER : Managerinit.sh, Set static manager ip = EC2PUBLIC_IP, Transfer.sh , 2xWorkerinit.sh, 2xJoiner.sh
 #Pull from manager to .(pwd)
 scp -i ec2key.pem username@ec2ip:/path/to/file . 
 scp -i YOURKEY.pem ubuntu@EC2PUBLIC_IP:/home/ubuntu .

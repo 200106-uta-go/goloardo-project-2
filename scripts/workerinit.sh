@@ -27,8 +27,10 @@ docker pull felicianoej/arkcontroller
 docker pull codezipline/dbserver
 docker pull danish287/horsocoped
 
-#create the overlap network for communication between networks
-#docker network create -d overlay --attachable onet
 
-#run arkcontrol
-docker service create --name horsocoped --expose 8080 --mode replicated --replicas=1 --network onet danish287/horsocoped
+
+
+
+
+
+
