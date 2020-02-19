@@ -2,7 +2,6 @@
 FROM golang:alpine AS builder 
 RUN mkdir /app 
 ADD . /app
-#WORKDIR /app
 RUN mkdir /app/badger
 #Adds basics package, this includes gcc which was used in badger's compression algorithm.
 RUN apk add build-base
@@ -10,7 +9,9 @@ RUN apk add build-base
 #This is executing apk update in the beginning and rm -rf /var/cache/apk/* in the end.
 RUN apk add --no-cache git && apk update
 #Obtain all the dependency to run the functions.
+WORKDIR /app
 RUN go get -d
+WORKDIR /
 RUN go build -o dbserver /app/dbserver.go
 
 #execute stage
