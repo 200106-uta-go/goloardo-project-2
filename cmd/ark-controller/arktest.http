@@ -1,8 +1,9 @@
-POST http://127.0.0.1/verify HTTP/1.1
+POST http://3.12.233.125:7777/verify HTTP/1.1
 content-type: application/json
 
 {
     "cmd": "verify",
     "ip": "",
-    "type": "webserver"
+    "type": "db",
+    "port": ""
 }

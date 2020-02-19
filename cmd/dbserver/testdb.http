@@ -1,2 +1,3 @@
-//GET http://127.0.1.1:8081/write?key="ariesmonth"&value="aries sunsign horoscope" HTTP/1.1
-GET http://127.0.1.1:8081/read?key=ariesyear HTTP/1.1
+//GET http://18.223.149.148:8081/write?key=ariesmonth&value=aries HTTP/1.1
+
+GET http://18.223.149.148:8081/read?key=ariesyear HTTP/1.1
