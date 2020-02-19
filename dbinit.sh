@@ -19,9 +19,7 @@ apt install golang
 apt install docker.io
 
 
-export MYIP=`curl ifconfig.me`
-#init a docker swarm 
-docker swarm init --advertise-addr $MYIP
+#export MYIP=`curl ifconfig.me`
 #docker swarm join-token worker
 
 #pull each docker image for webApp, database, and controller
@@ -30,13 +28,12 @@ docker pull codezipline/dbserver
 docker pull danish287/horsocoped
 
 #create the overlap network for communication between networks
-docker network create -d overlay --attachable onet
+#docker network create -d overlay --attachable onet
 
 #run arkcontrol
-docker service create --name arkcontroller --publish published=7777,target=7777 --mode replicated --replicas=1 --network onet felicianoej/arkcontroller
+docker service create --name dbserver --expose 8081 --mode replicated --replicas=1 --network onet codezipline/dbserver
 
 
-exit
 
 
 
