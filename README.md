@@ -24,10 +24,4 @@ Working in groups of 3 or 4, deploy a multi-instance server and VNFs to a produc
 - [ ] Presentation Slides
 
 
-#ORDER : Managerinit.sh, Set static manager ip = EC2PUBLIC_IP, Transfer.sh , 2xWorkerinit.sh, 2xJoiner.sh
-#Pull from manager to .(pwd)
-scp -i ec2key.pem username@ec2ip:/path/to/file . 
-scp -i YOURKEY.pem ubuntu@EC2PUBLIC_IP:/home/ubuntu .
-#Read from Present working directory and run this command to join swarm for worker
-docker swarm join --token ${w_token.txt} EC2PUBLIC_IP:2377
-docker swarm join --token SWMTKN-1-0kzbg8ex75h1nufvng9589spp0hrnr3i5h5bz5iqizwf62oirl-dpe91dl6yzz1z0wufg9udd27s 54.200.205.192:2377
+#ORDER : Managerinit.sh, Set static manager ip = EC2PUBLIC_IP(make this a env for manager and worker nodes), Transfer.sh (require pem file), 2xWorkerinit.sh, 2xJoiner.sh()

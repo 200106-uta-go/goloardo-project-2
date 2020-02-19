@@ -26,11 +26,3 @@ apt install docker.io
 docker pull felicianoej/arkcontroller
 docker pull codezipline/dbserver
 docker pull danish287/horsocoped
-
-
-
-
-
-
-
-
