@@ -1,4 +1,4 @@
-Dania, Josh, Emilio
+Dania, Josh, Emilio and Hector
 
 # Project 2 - Overlay Networking
 Working in groups of 3 or 4, deploy a multi-instance server and VNFs to a production environment on a cloud services platform of your choice. There must be communication across separate virtual machines managed by an SDN controller and service mesh, separate applications controlling and routing traffic between them. Infrastructure and application changes should be managed by an automated CI/CD pipeline.
