@@ -16,20 +16,22 @@ apt update
 apt install jenkins
 #install go and docker
 apt install golang
-apt install docker.io
-
-
-export MYIP=`curl ifconfig.me`
-#init a docker swarm 
-docker swarm init --advertise-addr $MYIP
-#write to w_token.txt the worker token to accept worker nodes
-sudo docker swarm join-token worker -q > w_token.txt  
-# docker swarm join --token SWMTKN-1-0kzbg8ex75h1nufvng9589spp0hrnr3i5h5bz5iqizwf62oirl-dpe91dl6yzz1z0wufg9udd27s 54.200.205.192:2377      
+apt install docker.io     
 
 #pull each docker image for webApp, database, and controller
 docker pull felicianoej/arkcontroller
 docker pull codezipline/dbserver
 docker pull danish287/horsocoped
+
+#export MYIP=`curl ifconfig.me`
+#init a docker swarm 
+docker swarm init --advertise-addr $MYIP
+#write to w_token.txt the worker token to accept worker nodes
+#Regular command: docker swarm join-token worker
+sudo docker swarm join-token worker -q > w_token.txt  
+# docker swarm join --token SWMTKN-1-0kzbg8ex75h1nufvng9589spp0hrnr3i5h5bz5iqizwf62oirl-dpe91dl6yzz1z0wufg9udd27s 54.200.205.192:2377 
+
+docker service inspect arkcontroller |
 
 #create the overlap network for communication between networks
 docker network create -d overlay --attachable onet
