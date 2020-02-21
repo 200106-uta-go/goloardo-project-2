@@ -1,0 +1,14 @@
+accesskey.txt
+privatekey.txt
+ip_address.txt
+myMac.pem
+.terraform
+p2
+p2.pub
+terraform.tfstate
+terraform.tfstate.backu
+keys/
+terraform.tfstate.backup
+terraform.tfstate.1582093158.backup
+terraform.tfstate.1582093175.backup
+terraform.tfstate.1582093182.backup
