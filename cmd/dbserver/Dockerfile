@@ -16,8 +16,8 @@ RUN go build -o dbserver /app/dbserver.go
 
 #execute stage
 FROM alpine:latest AS production
-COPY --from=builder . .
+COPY --from=builder /app .
 EXPOSE 8081
-ENTRYPOINT [ "./dbserver" ]
+ENTRYPOINT [ "/app/dbserver" ]
 CMD [ "" ]
 #CMD ["/bin/sh"]
