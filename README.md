@@ -22,7 +22,7 @@ Working in groups of 3 or 4, deploy a multi-instance server and VNFs to a produc
 ## Presentation
 - [ ] 15-minute Demonstration
 - [ ] Presentation Slides
-- [ ] jenkinspush25
+- [ ] jenkinspush26
 
 
 #ORDER : Managerinit.sh, Set static manager ip = EC2PUBLIC_IP(make this a env for manager and worker nodes), Transfer.sh (require pem file), 2xWorkerinit.sh, 2xJoiner.sh()
