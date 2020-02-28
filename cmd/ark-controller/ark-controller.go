@@ -106,13 +106,13 @@ func verify(w http.ResponseWriter, r *http.Request) {
 			}
 			if sc.Cmd == "verify" {
 				// Look on the ark archive for services of type sc.tipo
-				for _, item := range ark {
-					if item.tipo == sc.Tipo {
+				for i := (len(ark) - 1); i >= 0; i-- {
+					if ark[i].tipo == sc.Tipo {
 						scresponse := servicecall.ServiceCall{
 							Cmd:  "arkresponse",
-							IP:   item.ip,
-							Tipo: item.tipo,
-							Port: item.port,
+							IP:   ark[i].ip,
+							Tipo: ark[i].tipo,
+							Port: ark[i].port,
 						}
 						resp, err := json.Marshal(scresponse)
 						if err != nil {
