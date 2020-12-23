@@ -1,0 +1,17 @@
+------------Docker worker token-------------------
+docker swarm join-token worker
+-------------Docker services----------------------
+docker network create -d overlay --attachable onet
+docker service create --name arkcontroller --publish published=7777,target=7777 --mode replicated --replicas=1 --network onet felicianoej/arkcontroller
+docker service create --name dbserver --publish published=8081,target=8081 --mode replicated --replicas=1 --network onet codezipline/dbserver -ark=10.0.0.2
+docker service create --name horoscoped --publish published=80,target=8080 --mode replicated --replicas=1 --network onet danish287/horsocoped -ark=10.0.0.2
+docker service create --name pop --network onet --mode replicated --replicas=1 --restart-condition none felicianoej/p2dbpop -ip=10.0.0.2
+--------------------------------------------------
+
+
+docker service create --name dbserver -p 8081:8081 --mode replicated --replicas=1 --network onet -v myDB:/app/badger codezipline/dbserver -ark=3.12.233.125
+
+
+docker run --name dbserver -p 8081:8081 --network onet -v myDB:/app/badger codezipline/dbserver -ark=3.12.233.125
+docker run --name malpine -it --network onet alpine:latest
+docker run --name ark --network host -p 7777:7777 felicianoej/arkcontroller
